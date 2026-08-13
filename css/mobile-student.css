@@ -1,0 +1,162 @@
+/* ============================================================
+   Student "My Attendance" — unified design
+   Scope: only the student role's My Attendance page content
+   (below the existing, single, unchanged .topbar). ONE subject
+   card design is used at every screen width — only the grid
+   column count changes responsively. Desktop layout elsewhere,
+   the admin dashboard, and all existing functionality are
+   untouched — this file only adds new presentation.
+   ============================================================ */
+
+/* ---------- Overall attendance hero card ----------
+   Full width of the main content area on every screen size (desktop
+   included) — it must stretch from the left content margin to the
+   right content margin, not sit as a half-width card. */
+.attendance-hero{
+  background:var(--surface); border:1px solid var(--border); border-radius:16px;
+  padding:16px 18px; margin-bottom:14px; box-shadow:var(--shadow-sm);
+  width:100%;
+}
+.hero-label{ font-size:12.5px; font-weight:700; color:var(--text-dim); }
+.hero-pct{ font-size:34px; font-weight:800; line-height:1.2; margin-top:2px; color:var(--text); }
+.hero-sub{ font-size:12.5px; color:var(--text-faint); margin-bottom:10px; }
+.hero-bar{ height:8px; border-radius:6px; background:var(--surface-2); overflow:hidden; margin-bottom:12px; }
+.hero-bar-fill{ height:100%; border-radius:6px; background:var(--green); transition:width .3s ease; }
+.hero-bar-fill.amber{ background:var(--amber); }
+.hero-bar-fill.red{ background:var(--red); }
+.hero-breakdown{ display:grid; grid-template-columns:repeat(3,1fr); text-align:center; gap:8px; }
+.hero-breakdown .hb-val{ display:block; font-size:16px; font-weight:800; color:var(--text); }
+.hero-breakdown .hb-lbl{ display:block; font-size:10.5px; color:var(--text-faint); font-weight:600; margin-top:1px; }
+
+/* ---------- Attendance attention banner ---------- */
+.attn-banner{
+  border-radius:14px; padding:10px 14px; margin-bottom:14px; border:1px solid transparent; width:100%;
+}
+.attn-banner.attn-good{ background:var(--green-bg); border-color:rgba(31,169,113,.25); }
+.attn-banner.attn-attention{ background:var(--amber-bg); border-color:rgba(224,147,47,.3); }
+.attn-banner.attn-shortage{ background:var(--red-bg); border-color:rgba(229,72,77,.3); }
+.attn-title{ font-size:13px; font-weight:700; }
+.attn-banner.attn-good .attn-title{ color:var(--green); }
+.attn-banner.attn-attention .attn-title{ color:var(--amber); }
+.attn-banner.attn-shortage .attn-title{ color:var(--red); }
+.attn-detail{ font-size:12px; color:var(--text-dim); margin-top:3px; }
+
+/* ---------- Subject Attendance section title + export widget ---------- */
+.mobile-section-title{ margin-bottom:12px; }
+.mobile-section-title h2{ font-size:16.5px; }
+
+/* ---------- ONE unified subject card design (desktop + mobile).
+   Order: code → name → faculty → [fraction ... %] → progress bar →
+   Classes/Present/Absent row (ADDED below the bar, per spec). Only
+   the grid column count changes responsively — the card itself never
+   changes shape. ---------- */
+.subj-cards-grid{ display:grid; grid-template-columns:1fr; gap:12px; margin-bottom:4px; }
+@media (min-width:700px){ .subj-cards-grid{ grid-template-columns:repeat(2,1fr); } }
+@media (min-width:1150px){ .subj-cards-grid{ grid-template-columns:repeat(3,1fr); } }
+
+.subj-card{
+  background:var(--surface); border:1px solid var(--border); border-left:3px solid var(--border);
+  border-radius:14px; padding:14px 16px; box-shadow:var(--shadow-sm);
+}
+.subj-card.status-good{ border-left-color:var(--green); }
+.subj-card.status-attention{ border-left-color:var(--amber); }
+.subj-card.status-shortage{ border-left-color:var(--red); }
+.subj-card-code{ font-size:11px; font-weight:700; color:var(--text-faint); font-family:'JetBrains Mono',monospace; }
+.subj-card-name{ font-size:14.5px; font-weight:700; color:var(--text); margin-top:1px; line-height:1.3; overflow-wrap:break-word; }
+.subj-card-faculty{ font-size:12px; color:var(--text-dim); margin-top:4px; }
+.subj-card-row{ display:flex; align-items:baseline; justify-content:space-between; gap:10px; margin-top:12px; }
+.subj-card-count{ font-size:12.5px; color:var(--text-dim); font-weight:600; }
+.subj-card-pct{ font-size:16px; font-weight:800; white-space:nowrap; }
+.subj-card.status-good .subj-card-pct{ color:var(--green); }
+.subj-card.status-attention .subj-card-pct{ color:var(--amber); }
+.subj-card.status-shortage .subj-card-pct{ color:var(--red); }
+.subj-card-bar{ height:7px; border-radius:5px; background:var(--surface-2); overflow:hidden; margin-top:8px; }
+.subj-card-bar-fill{ height:100%; border-radius:5px; }
+.subj-card.status-good .subj-card-bar-fill{ background:var(--green); }
+.subj-card.status-attention .subj-card-bar-fill{ background:var(--amber); }
+.subj-card.status-shortage .subj-card-bar-fill{ background:var(--red); }
+.subj-card-breakdown{ display:grid; grid-template-columns:repeat(3,1fr); text-align:center; gap:8px; margin-top:12px; padding-top:10px; border-top:1px dashed var(--border); }
+.subj-card-breakdown .sb-val{ display:block; font-size:15px; font-weight:800; color:var(--text); }
+.subj-card-breakdown .sb-lbl{ display:block; font-size:10px; color:var(--text-faint); font-weight:600; margin-top:1px; }
+
+/* ---------- Export widget — shared by mobile AND desktop, so Excel/PDF
+   are always available and always call the same handlers regardless of
+   screen size. ---------- */
+.export-wrap{ position:relative; display:inline-block; }
+.btn-export-compact{
+  background:var(--blue); color:#fff; border:none; border-radius:9px; padding:7px 12px;
+  font-size:12.5px; font-weight:700; display:inline-flex; align-items:center; gap:5px;
+}
+.export-menu{
+  display:none; position:absolute; right:0; top:calc(100% + 6px); z-index:20; min-width:150px;
+  background:var(--surface); border:1px solid var(--border); border-radius:12px; box-shadow:var(--shadow-lg);
+  overflow:hidden;
+}
+.export-menu.show{ display:block; }
+.export-menu button{
+  display:flex; align-items:center; gap:8px; width:100%; padding:10px 14px; background:transparent; border:none;
+  color:var(--text); font-size:13px; font-weight:600; text-align:left;
+}
+.export-menu button:hover{ background:var(--surface-2); }
+.export-menu button + button{ border-top:1px solid var(--border); }
+
+/* ---------- Attendance by Subject — donut chart + legend ---------- */
+.donut-card{
+  background:var(--surface); border:1px solid var(--border); border-radius:16px;
+  padding:20px 22px; box-shadow:var(--shadow-sm);
+}
+.donut-title-pill{
+  display:inline-flex; align-items:center; gap:8px; background:#17365D; color:#fff;
+  font-weight:800; font-size:13px; letter-spacing:.03em; text-transform:uppercase;
+  padding:9px 16px; border-radius:10px; margin-bottom:18px;
+}
+.donut-body{ display:flex; align-items:flex-start; gap:28px; flex-wrap:wrap; }
+.donut-chart-col{ flex:0 0 auto; display:flex; flex-direction:column; align-items:center; gap:14px; margin:0 auto; }
+.donut-chart-wrap{ flex:0 0 auto; display:flex; align-items:center; justify-content:center; position:relative; }
+.donut-chart-wrap svg{ display:block; max-width:100%; height:auto; overflow:visible; }
+.donut-leader{ stroke-width:1.25; opacity:.55; }
+.donut-callout-name{ font-size:10.5px; font-weight:700; fill:var(--text); }
+.donut-callout-frac{ font-size:10px; font-weight:800; }
+.donut-center{ position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); text-align:center; pointer-events:none; }
+.donut-center .dc-pct{ font-size:26px; font-weight:800; color:var(--green); line-height:1; }
+.donut-center .dc-pct-lbl{ font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:.05em; color:var(--text-faint); margin-top:1px; }
+.donut-center .dc-div{ width:34px; height:1px; background:var(--border); margin:6px auto; }
+.donut-center .dc-abs{ font-size:22px; font-weight:800; color:var(--red); line-height:1; }
+.donut-center .dc-abs-lbl{ font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:.05em; color:var(--text-faint); margin-top:1px; }
+.donut-legend-note{ display:flex; flex-wrap:wrap; justify-content:center; gap:14px; font-size:11.5px; color:var(--text-dim); font-weight:600; }
+.donut-legend-note span{ display:inline-flex; align-items:center; gap:6px; }
+.donut-note-swatch{ display:inline-block; width:11px; height:11px; border-radius:3px; background:#17365D; }
+.donut-note-swatch-light{ background:#C9D6E8; }
+.donut-legend-col{ flex:1 1 260px; min-width:240px; display:flex; flex-direction:column; }
+.donut-legend-head{
+  display:flex; align-items:center; justify-content:space-between; gap:10px;
+  font-size:12.5px; font-weight:800; color:#17365D; text-transform:uppercase; letter-spacing:.02em;
+  padding-bottom:8px; border-bottom:2px solid #17365D; margin-bottom:4px;
+}
+.donut-legend{ display:flex; flex-direction:column; max-height:260px; overflow-y:auto; }
+.donut-legend-item{ display:flex; align-items:center; gap:9px; font-size:13px; padding:9px 0; border-bottom:1px dashed var(--border); }
+.donut-legend-item:last-child{ border-bottom:none; }
+.donut-swatch-pair{ display:inline-flex; flex-shrink:0; gap:3px; }
+.donut-swatch{ width:12px; height:12px; border-radius:3.5px; flex-shrink:0; }
+.donut-legend-name{ flex:1; min-width:0; color:var(--text); font-weight:700; overflow-wrap:break-word; }
+.donut-legend-frac{ font-weight:800; white-space:nowrap; }
+.donut-summary-box{
+  display:flex; align-items:center; gap:16px; margin-top:14px; padding:12px 16px;
+  background:var(--surface-2); border-radius:12px;
+}
+.donut-summary-icon{ font-size:20px; flex-shrink:0; }
+.donut-summary-stat{ display:flex; flex-direction:column; gap:2px; }
+.donut-summary-stat .ds-lbl{ font-size:11px; font-weight:600; color:var(--text-faint); }
+.donut-summary-stat .ds-val{ font-size:18px; font-weight:800; }
+.donut-summary-div{ width:1px; align-self:stretch; background:var(--border); }
+
+@media (max-width:700px){
+  .donut-body{ flex-direction:column; align-items:stretch; }
+  .donut-chart-col{ width:100%; }
+  .donut-legend{ max-height:none; }
+}
+
+@media (max-width:360px){
+  .hero-pct{ font-size:29px; }
+  .subj-card-name{ font-size:14px; }
+}

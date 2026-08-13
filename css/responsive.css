@@ -1,0 +1,145 @@
+/* ============================================================
+   Responsive
+   ============================================================ */
+
+@media (max-width: 1180px){
+  .workspace{grid-template-columns:1fr;}
+  .reports-grid{grid-template-columns:1fr;}
+  .stat-grid{grid-template-columns:repeat(2,1fr);}
+  .stat-grid-5{grid-template-columns:repeat(3,1fr);}
+}
+
+@media (max-width: 900px){
+  .sidebar{
+    transform:translateX(-100%);transition:transform .2s ease;box-shadow:var(--shadow-lg);
+  }
+  .sidebar.open{transform:translateX(0);}
+  .main{margin-left:0;}
+  .menu-btn{display:inline-flex !important;}
+  .content{padding:16px;padding-bottom:88px;}
+  .topbar{padding:14px 16px;}
+  /* Mobile status area: Date/Time/Synced form one wrapping row, the
+     student-info + theme control form a second row directly below it —
+     Synced always stays above the student row, never beside it. */
+  .topbar-right{flex-direction:column;align-items:stretch;gap:8px;width:100%;}
+  .topbar-status-pills, .topbar-user-row{ display:flex; align-items:center; flex-wrap:wrap; gap:8px; }
+  .topbar-user-row{ justify-content:space-between; }
+  .topbar-status-pills .role-badge, .topbar-user-row .role-badge{ padding:6px 10px; font-size:12px; }
+  .topbar-user-row #themeBtn{ flex-shrink:0; }
+  .sidebar-scrim{
+    position:fixed;inset:0;background:rgba(10,18,36,.5);z-index:49;display:none;
+  }
+  .sidebar-scrim.show{display:block;}
+  /* Tablet width: two-up grid keeps every field at a comfortable, equal size
+     instead of squeezing four items into one row. */
+  .filters-bar{grid-template-columns:1fr 1fr;}
+  .filters-bar #todayBtn{width:100%;justify-content:center;}
+}
+
+.menu-btn{
+  display:none;width:38px;height:38px;border-radius:9px;border:1px solid rgba(255,255,255,.16);
+  background:rgba(255,255,255,.06);color:#fff;align-items:center;justify-content:center;font-size:16px;
+  flex-shrink:0;
+}
+
+@media (max-width: 720px){
+  .stat-grid{grid-template-columns:repeat(2,1fr);gap:8px;}
+  .stat-grid-5{grid-template-columns:repeat(2,1fr);}
+  .stat-card{padding:8px 9px;}
+  .stat-card .val{font-size:17px;}
+  table.roster thead{display:none;}
+  table.roster, table.roster tbody, table.roster tr, table.roster td{display:block;width:100%;}
+  table.roster tr{
+    padding:12px 14px;border-bottom:1px solid var(--border);display:grid;
+    grid-template-columns:1fr auto;gap:4px 10px;align-items:center;
+  }
+  table.roster td{padding:2px 0;border:none;}
+  table.roster td.td-sno{display:none;}
+  table.roster td.td-roll{grid-column:1;font-size:12px;color:var(--text-faint);}
+  table.roster td.td-name{grid-column:1;font-weight:600;font-size:14.5px;}
+  table.roster td.td-status{grid-column:2;grid-row:1 / span 2;}
+  .quick-add{flex-direction:column;align-items:stretch;}
+  .quick-add .qa-fields{flex-direction:column;}
+  .quick-actions-strip{padding:9px 10px;gap:7px;}
+  .quick-actions-strip .btn{height:32px;font-size:12px;}
+  /* Below 720px, Date/Subject/Faculty/Today each get the full row width so
+     the subject name never has to fight a 2-up column for space. */
+  .filters-bar{grid-template-columns:1fr;}
+  .filters-bar #todayBtn{width:100%;justify-content:center;}
+  .hist-quick-row{flex-direction:column;align-items:stretch;}
+  .hist-quick-search{width:100%;}
+  .hist-quick-subject{max-width:100%;}
+  /* Report card: matches the reference design's inline "icon Label: value"
+     rows at every width down to 320px — compact padding, no horizontal
+     scroll, fonts step down slightly. Action buttons go full-width instead
+     of a tight 2-column grid. */
+  .report-panel .report-body{padding:12px 14px;}
+  .report-info-list{gap:7px;}
+  .rii-lbl,.rii-val{font-size:13px;}
+  .rii-ic{font-size:16px;width:20px;}
+  .report-actions{grid-template-columns:1fr;}
+  .report-actions-full{grid-column:1;}
+}
+
+@media (max-width:360px){
+  .report-panel .report-body{padding:10px 12px;}
+  .rii-lbl,.rii-val{font-size:12.5px;}
+  .rii-ic{font-size:15px;width:18px;}
+}
+
+/* Bottom nav for mobile */
+.bottom-nav{
+  display:none;position:fixed;bottom:0;left:0;right:0;background:var(--navy-800);
+  padding:8px 6px calc(8px + env(safe-area-inset-bottom));z-index:60;
+  box-shadow:0 -4px 20px rgba(0,0,0,.25);
+}
+@media (max-width:900px){
+  .bottom-nav{display:flex;justify-content:space-around;}
+  .sidebar .nav-group.mobile-hide{display:none;}
+}
+.bn-item{
+  background:transparent;border:none;color:#9aa6c2;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;gap:4px;font-size:10.5px;font-weight:600;
+  padding:8px 4px;border-radius:13px;flex:1;min-height:52px;
+  transition:color .2s ease, background-color .2s ease, transform .15s ease;
+}
+.bn-item .ic{font-size:22px;line-height:1;transition:transform .2s ease;}
+.bn-item.active{color:var(--gold);background:rgba(244,168,37,.14);}
+.bn-item.active .ic{transform:translateY(-1px) scale(1.1);}
+.bn-item:active{transform:scale(.93);}
+
+/* Below 760px there's no room for a side-by-side brand panel + form —
+   drop to one column, hide the (desktop-only) brand panel, and show the
+   compact logo/title block at the top of the card instead. */
+@media (max-width:760px){
+  .login-shell{grid-template-columns:1fr;border-radius:22px;max-width:400px;}
+  .login-brand{display:none;}
+  .login-card-head{display:block;text-align:center;margin-bottom:18px;}
+  .login-card-head .login-logo-mobile{width:90px;height:90px;margin-bottom:10px;}
+}
+
+@media (max-width:480px){
+  .login-wrap > .login-card, .login-shell .login-card{padding:26px 18px;border-radius:18px;}
+  .login-shell{border-radius:18px;}
+  .login-logo:not(.login-logo-mobile){width:48px;height:48px;}
+  .login-logo-mobile{width:80px;height:80px;}
+  .login-wrap{padding:16px 16px calc(16px + env(safe-area-inset-bottom));gap:12px;}
+  .login-footer{font-size:10.5px;flex-direction:column;gap:6px;}
+  .system-status{padding:5px 10px;font-size:10.5px;}
+  .report-actions{padding:12px 14px 16px;}
+  .subject-picker-modal{max-width:100%;}
+  .subject-picker-list{max-height:65vh;}
+}
+
+/* ============================================================
+   Attendance Register — desktop/tablet keep the table (horizontal
+   scroll if needed), mobile (<768px) switches to cards instead of
+   compressing the many date columns into an unreadable table.
+   ============================================================ */
+@media (max-width:767px){
+  .register-table-wrap{display:none;}
+  .register-cards{display:flex;flex-direction:column;}
+}
+@media (min-width:768px){
+  .register-cards{display:none !important;}
+}

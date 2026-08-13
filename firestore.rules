@@ -1,0 +1,23 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // The whole app's data lives in one document: appData/main
+    // (see firebase/firestore-sync.js for why). Any signed-in client —
+    // including the anonymous sign-in the app performs automatically at
+    // boot — can read and write it.
+    //
+    // NOTE on real per-role isolation: this app's Admin/Teacher vs Student
+    // permission split is currently enforced by the app's own UI/router,
+    // not by these rules, because everyone shares one anonymous Firebase
+    // Auth session rather than the app having individual per-user Firebase
+    // accounts. If you need a Student to be server-side blocked from ever
+    // reading other students' rows, that requires real per-user Firebase
+    // Authentication (e.g. email/password per account) plus splitting
+    // `sessions`/`students` into their own collections so rules can check
+    // `request.auth.uid` per document. See README "Connecting Firebase".
+    match /appData/{docId} {
+      allow read, write: if request.auth != null;
+    }
+  }
+}

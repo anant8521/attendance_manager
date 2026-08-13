@@ -1,0 +1,194 @@
+/* ============================================================
+   Class Attendance Manager — Design Tokens
+   Palette: Navy sidebar (#0f1b33), warm gold accent (#f4a825),
+   clean paper content area, semantic green/red/blue status colors.
+   ============================================================ */
+
+:root{
+  --navy-900:#0a1424;
+  --navy-800:#0f1b33;
+  --navy-700:#16254a;
+  --navy-600:#1e315e;
+  --gold:#f4a825;
+  --gold-dim:#c98a1e;
+
+  --bg:#eef1f6;
+  --surface:#ffffff;
+  --surface-2:#f6f8fb;
+  --border:#e3e8f0;
+  --text:#16213a;
+  --text-dim:#5b6780;
+  --text-faint:#8892a6;
+
+  --green:#1fa971;
+  --green-bg:#e7f8f1;
+  --red:#e5484d;
+  --red-bg:#fdeceb;
+  --blue:#3b6ee0;
+  --blue-bg:#e9f0fe;
+  --purple:#6a4fd6;
+  --purple-bg:#efeafb;
+  --amber:#e0932f;
+  --amber-bg:#fdf1e2;
+
+  --radius-sm:8px;
+  --radius:14px;
+  --radius-lg:20px;
+  --shadow-sm:0 1px 2px rgba(15,27,51,.06);
+  --shadow:0 4px 16px rgba(15,27,51,.08);
+  --shadow-lg:0 12px 32px rgba(15,27,51,.14);
+
+  --font-display:'Poppins', 'Segoe UI', sans-serif;
+  --font-body:'Inter', 'Segoe UI', sans-serif;
+
+  --sidebar-w:250px;
+}
+
+[data-theme="dark"]{
+  --bg:#0b1220;
+  --surface:#121b30;
+  --surface-2:#0f1728;
+  --border:#22304d;
+  --text:#eaeefb;
+  --text-dim:#a6b0c8;
+  --text-faint:#727e99;
+  --green-bg:#0f2a22;
+  --red-bg:#301618;
+  --blue-bg:#101f3d;
+  --purple-bg:#1c1836;
+  --amber-bg:#2b2010;
+}
+
+*{box-sizing:border-box;}
+html,body{margin:0;padding:0;}
+body{
+  font-family:var(--font-body);
+  background:var(--bg);
+  color:var(--text);
+  -webkit-font-smoothing:antialiased;
+  overflow-x:hidden;
+}
+h1,h2,h3,h4,.brand-title,.app-title{font-family:var(--font-display);}
+button{font-family:inherit;cursor:pointer;}
+input,select,textarea{font-family:inherit;}
+a{color:inherit;}
+::selection{background:var(--gold);color:#1a1200;}
+
+/* Focus visibility for accessibility */
+button:focus-visible,input:focus-visible,select:focus-visible,a:focus-visible{
+  outline:2px solid var(--blue);
+  outline-offset:2px;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar{width:8px;height:8px;}
+::-webkit-scrollbar-thumb{background:var(--border);border-radius:8px;}
+::-webkit-scrollbar-track{background:transparent;}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce){
+  *{animation-duration:.001ms !important;transition-duration:.001ms !important;}
+}
+
+.pill{
+  display:inline-flex;align-items:center;gap:6px;
+  padding:6px 14px;border-radius:999px;font-weight:600;font-size:13px;
+  border:none;
+}
+.pill.present{background:var(--green-bg);color:var(--green);}
+.pill.absent{background:var(--red-bg);color:var(--red);}
+.pill.unmarked{background:var(--surface-2);color:var(--text-faint);}
+
+.btn{
+  display:inline-flex;align-items:center;gap:8px;
+  padding:10px 16px;border-radius:10px;border:1px solid var(--border);
+  background:var(--surface);color:var(--text);font-weight:600;font-size:13.5px;
+  transition:transform .12s ease, box-shadow .12s ease, background .15s ease;
+  position:relative;overflow:hidden;
+}
+.btn:hover{transform:translateY(-1px);box-shadow:var(--shadow-sm);}
+.btn:active{transform:translateY(0);}
+.btn-block{width:100%;justify-content:center;}
+.btn-primary{background:var(--blue);border-color:var(--blue);color:#fff;}
+.btn-success{background:var(--green);border-color:var(--green);color:#fff;}
+.btn-danger{background:var(--red);border-color:var(--red);color:#fff;}
+.btn-warning{background:var(--amber);border-color:var(--amber);color:#fff;}
+.btn-secondary{background:var(--surface-2);border-color:var(--border);color:var(--text-dim);}
+.btn-outline-success{background:var(--green-bg);border-color:transparent;color:var(--green);}
+.btn-outline-danger{background:var(--red-bg);border-color:transparent;color:var(--red);}
+.btn-outline{background:transparent;border:1.5px solid var(--blue);color:var(--blue);}
+.btn-outline:hover{background:var(--blue);color:#fff;}
+.btn-purple{background:var(--purple);border-color:var(--purple);color:#fff;}
+.btn-gold{background:var(--gold);border-color:var(--gold);color:#1a1200;}
+.btn-ghost{background:transparent;border-color:transparent;}
+.btn-sm{padding:6px 10px;font-size:12.5px;border-radius:8px;}
+.btn[disabled]{opacity:.5;cursor:not-allowed;transform:none;}
+
+/* Ripple feedback on every .btn, wired up once in app.js (delegated
+   pointerdown listener) — CSS-only otherwise, and respects the
+   prefers-reduced-motion override above like every other animation. */
+.btn-ripple{
+  position:absolute;border-radius:50%;transform:scale(0);
+  background:currentColor;opacity:.28;pointer-events:none;
+  animation:btnRipple .5s ease-out forwards;
+}
+@keyframes btnRipple{ to{ transform:scale(2.6); opacity:0; } }
+
+.card{
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:var(--radius);
+  box-shadow:var(--shadow-sm);
+}
+
+.toast-stack{
+  position:fixed;bottom:20px;right:20px;z-index:9999;
+  display:flex;flex-direction:column;gap:10px;max-width:320px;
+}
+.toast{
+  background:var(--navy-800);color:#fff;padding:12px 16px;border-radius:10px;
+  box-shadow:var(--shadow-lg);font-size:13.5px;display:flex;gap:10px;align-items:center;
+  animation:toast-in .25s ease;
+}
+.toast.success{border-left:4px solid var(--green);}
+.toast.error{border-left:4px solid var(--red);}
+.toast.info{border-left:4px solid var(--blue);}
+@keyframes toast-in{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:translateY(0);}}
+
+.modal-backdrop{
+  position:fixed;inset:0;background:rgba(10,18,36,.55);
+  display:flex;align-items:center;justify-content:center;z-index:9998;
+  padding:16px;backdrop-filter:blur(2px);
+}
+.modal{
+  background:var(--surface);border-radius:var(--radius-lg);padding:24px;
+  width:100%;max-width:420px;box-shadow:var(--shadow-lg);
+  animation:modal-in .18s ease;
+}
+@keyframes modal-in{from{opacity:0;transform:scale(.96);}to{opacity:1;transform:scale(1);}}
+.modal h3{margin:0 0 4px;}
+.modal p.sub{color:var(--text-dim);font-size:13.5px;margin:0 0 18px;}
+.modal .field{margin-bottom:14px;}
+.modal .field label{display:block;font-size:12.5px;font-weight:600;color:var(--text-dim);margin-bottom:6px;}
+.modal .actions{display:flex;gap:10px;margin-top:20px;}
+.modal .actions .btn{flex:1;}
+
+.field-input, select.field-input{
+  width:100%;padding:10px 12px;border-radius:9px;border:1px solid var(--border);
+  background:var(--surface-2);color:var(--text);font-size:14px;
+}
+.field-input:focus{outline:2px solid var(--blue);outline-offset:0;border-color:var(--blue);}
+.req-star{color:var(--red);font-weight:700;}
+.field-input.field-error{border-color:var(--red) !important;background:var(--red-bg) !important;}
+.field-error-msg{color:var(--red);font-size:11.5px;font-weight:600;margin-top:4px;}
+
+.empty-state{
+  text-align:center;padding:48px 20px;color:var(--text-faint);
+}
+.empty-state .emoji{font-size:38px;margin-bottom:10px;}
+
+.skeleton{
+  background:linear-gradient(90deg,var(--surface-2) 25%,var(--border) 37%,var(--surface-2) 63%);
+  background-size:400% 100%;animation:shimmer 1.4s ease infinite;border-radius:8px;
+}
+@keyframes shimmer{0%{background-position:100% 50%;}100%{background-position:0 50%;}}

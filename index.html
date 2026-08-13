@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Class Attendance Manager</title>
+<meta name="description" content="Offline-first attendance manager for your class — mark attendance, generate WhatsApp reports, manage students.">
+<meta name="theme-color" content="#0f1b33">
+
+<link rel="manifest" href="./manifest.json">
+<link rel="icon" href="./assets/icons/icon-192.png">
+<link rel="apple-touch-icon" href="./assets/icons/icon-192.png">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="./css/style.css">
+<link rel="stylesheet" href="./css/dashboard.css">
+<link rel="stylesheet" href="./css/responsive.css">
+<link rel="stylesheet" href="./css/mobile-student.css">
+</head>
+<body>
+  <div id="root"></div>
+  <div class="toast-stack" id="toastStack"></div>
+
+  <!-- Real cell-styled .xlsx export. Vendored locally (not loaded from a CDN)
+       so Download Excel works with zero network dependency — on first install,
+       offline, behind restrictive networks, everywhere. See vendor/xlsx-js-style-LICENSE.txt. -->
+  <script src="./vendor/xlsx.bundle.js"></script>
+
+  <script src="./js/students-data.js"></script>
+  <script src="./js/subjects-data.js"></script>
+  <script src="./js/export-xlsx.js"></script>
+
+  <!-- Real email delivery for Admin "Forgot Password" OTPs (see js/otp-delivery.js
+       for the honesty note on why SMS can't be a drop-in client library the
+       same way). Disabled by default until EMAILJS_ENABLED is set to true
+       and real EmailJS credentials are added there. -->
+  
+  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+  <script src="./js/otp-delivery.js"></script>
+
+  <!-- Firebase: module scripts are deferred until after parsing (same timing
+       bucket as app.js's own DOMContentLoaded boot), so window.FirestoreSync
+       is guaranteed to exist by the time boot() reads it. See firebase/firestore-sync.js. -->
+  <script type="module" src="./firebase/firebase-config.js"></script>
+  <script type="module" src="./firebase/firestore-sync.js"></script>
+
+  <script src="./js/app.js"></script>
+</body>
+</html>
