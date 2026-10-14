@@ -79,24 +79,46 @@ function initEmailJS() {
 // verification checks against.
 async function sendEmailOtp(email, otp, fullName) {
 
-    if (!initEmailJS()) {
+    if (!email || !String(email).trim()) {
         return {
             ok: false,
-            reason: "EmailJS not initialized"
+            reason: "No recovery email is registered for this account."
         };
     }
 
-    try {
+    if (!EMAILJS_CONFIG.publicKey || !EMAILJS_CONFIG.serviceId || !EMAILJS_CONFIG.templateId) {
+        return {
+            ok: false,
+            reason: "EmailJS configuration is incomplete. Check the public key, service ID and template ID in js/otp-delivery.js.",
+            code: "not_configured"
+        };
+    }
 
-        await emailjs.send(
+    if (!initEmailJS()) {
+        return {
+            ok: false,
+            reason: "EmailJS could not be initialized. Check that the EmailJS CDN is loaded and the public key is valid.",
+            code: "not_initialized"
+        };
+    }
+
+    const templateParams = {
+        to_email: String(email).trim(),
+        to_name: fullName || "Admin",
+        otp_code: String(otp)
+    };
+
+    try {
+        const response = await emailjs.send(
             EMAILJS_CONFIG.serviceId,
             EMAILJS_CONFIG.templateId,
-            {
-                to_email: email,
-                to_name: fullName,
-                otp_code: otp
-            }
+            templateParams
         );
+
+        console.info("EmailJS OTP sent successfully.", {
+            status: response && response.status,
+            text: response && response.text
+        });
 
         return {
             ok: true,
@@ -104,12 +126,32 @@ async function sendEmailOtp(email, otp, fullName) {
         };
 
     } catch (error) {
+        // Keep the raw EmailJS error in the console for debugging, but return
+        // a safe, human-readable message to the Forgot Password UI.
+        console.error("EmailJS OTP send failed:", error);
 
-        console.error(error);
+        const status = Number(error && error.status) || 0;
+        const raw = String((error && (error.text || error.message)) || "Unknown EmailJS error").trim();
+        const lower = raw.toLowerCase();
+        let reason = raw;
+
+        if (status === 400 || lower.includes("bad request")) {
+            reason = "EmailJS rejected the request. Check the Service ID, Template ID and template variables (to_email, to_name, otp_code).";
+        } else if (status === 401 || status === 403 || lower.includes("public key") || lower.includes("unauthorized") || lower.includes("forbidden")) {
+            reason = "EmailJS authorization failed. Check the Public Key and make sure this service/template belongs to the same EmailJS account.";
+        } else if (status === 404 || lower.includes("template not found") || lower.includes("service not found")) {
+            reason = "EmailJS Service ID or Template ID was not found. Verify service_t75o0hk and template_ujho8nu in EmailJS.";
+        } else if (status === 429 || lower.includes("too many") || lower.includes("rate")) {
+            reason = "EmailJS sending limit was reached. Wait a little and try again.";
+        } else if (lower.includes("network") || lower.includes("failed to fetch") || lower.includes("fetch")) {
+            reason = "Could not connect to EmailJS. Check your internet connection, browser/network blocking, or EmailJS availability.";
+        }
 
         return {
             ok: false,
-            reason: error.text || error.message
+            reason,
+            code: status || "emailjs_error",
+            rawReason: raw
         };
     }
 }
